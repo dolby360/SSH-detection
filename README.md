@@ -8,13 +8,6 @@
 
 [Network configuration](https://github.com/dolby360/SSH-detection/tree/master/Bugs%20and%20install/Network%20configuration)
 
-## Install mySQL: 
-
-[Install mySQLL](https://github.com/dolby360/SSH-detection/tree/master/Bugs%20and%20install/SQL)
-
-##gmail api
-
-[Install mySQLL](https://developers.google.com/gmail/api/quickstart/python?authuser=2)
 
 ## Packets structure
 
