@@ -1,5 +1,6 @@
 import csv 
 import time
+from decimal import Decimal 
 
 class anomaly_analyzer():
     def __init__(self):
@@ -29,18 +30,30 @@ class anomaly_analyzer():
         read_data_from_csv()
 
         def devide_to_lists_by_IPs():
-            lists_of_IPs_and_timestamps = []
+            self.lists_of_IPs_and_timestamps = []
             _IPs_list = set(IPs_list)
             for k in _IPs_list:
                 t = list(filter(lambda x:str(x) == k,lis))
-                lists_of_IPs_and_timestamps.append(t)
+                self.lists_of_IPs_and_timestamps.append(t)
 
-            for i in lists_of_IPs_and_timestamps:
-                for j in i:
-                    print str(j)
-                print '====================================='
+            # for i in self.lists_of_IPs_and_timestamps:
+            #     for j in i:
+            #         print str(j) + '   '  + str(j.get_timestamp())
+            #     print '====================================='
         
         devide_to_lists_by_IPs()
+
+        
+        for listItem in self.lists_of_IPs_and_timestamps:
+            b = 0
+            for j in range(0,len(listItem) - 1):
+                b += (listItem[j+1].get_timestamp() - listItem[j].get_timestamp())
+            avg = int(len(listItem)/b)
+            if avg < 5:
+                print 'Computer with ip: ' + listItem[0].get_IP() ' try to make SSH connection every: ' + avg ' seconds' 
+                #Block the IP
+                # import subprocess
+                # subprocess.Popen("sudo iptables -A INPUT -s " +listItem[0].get_IP()+ " -p TCP -j DROP")
 
 
 
@@ -49,4 +62,8 @@ class csv_data_holder():
         self.IP = ip
         self.timestamp = timestamp
     def __str__(self):
+        return self.IP
+    def get_timestamp(self):
+        return Decimal(self.timestamp)
+    def get_IP(self):
         return self.IP
