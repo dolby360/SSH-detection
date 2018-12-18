@@ -9,11 +9,18 @@ class collect_stat():
         self.con_data_DS = []
         self.counter = 0
         self.lock = None
+        self.queue = None
     def run(self,q,lock):
         self.lock = lock
-        while True:
+
+        while True: 
+            print '1'
+            time.sleep(1)
             popped = q.get()
+            print popped
             self.set_new_pkt(popped)
+            print '3'
+            
 
     def set_new_pkt(self,pkt):
         self.lock.acquire()

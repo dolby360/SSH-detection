@@ -49,7 +49,7 @@ class anomaly_analyzer():
             for j in range(0,len(listItem) - 1):
                 b += (listItem[j+1].get_timestamp() - listItem[j].get_timestamp())
             avg = int(b/len(listItem))
-            if avg < 5 and len(listItem) > 1:
+            if avg < 5 and len(listItem) > 2:
                 print 'Computer with ip: ' + listItem[0].get_IP() + ' try to make SSH connection every: ' + str(avg) + ' seconds' 
                 #Block the IP
                 # import subprocess
