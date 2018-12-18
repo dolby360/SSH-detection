@@ -14,12 +14,9 @@ class collect_stat():
         self.lock = lock
 
         while True: 
-            print '1'
             time.sleep(1)
             popped = q.get()
-            print popped
             self.set_new_pkt(popped)
-            print '3'
             
 
     def set_new_pkt(self,pkt):

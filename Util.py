@@ -20,5 +20,5 @@ def clean_csv():
         row = 'IP,timestamp,counter\n' 
         csvfile.write(row)         
         csvfile.write('1.1.1.1,7,0\n')
-        csvfile.write('9.9.9.9,7,0')
+        csvfile.write('9.9.9.9,7,0\n')
 
