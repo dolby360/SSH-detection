@@ -48,12 +48,13 @@ class anomaly_analyzer():
             b = 0
             for j in range(0,len(listItem) - 1):
                 b += (listItem[j+1].get_timestamp() - listItem[j].get_timestamp())
-            avg = int(len(listItem)/b)
-            if avg < 5:
-                print 'Computer with ip: ' + listItem[0].get_IP() ' try to make SSH connection every: ' + avg ' seconds' 
+            avg = int(b/len(listItem))
+            if avg < 5 and len(listItem) > 1:
+                print 'Computer with ip: ' + listItem[0].get_IP() + ' try to make SSH connection every: ' + str(avg) + ' seconds' 
                 #Block the IP
                 # import subprocess
                 # subprocess.Popen("sudo iptables -A INPUT -s " +listItem[0].get_IP()+ " -p TCP -j DROP")
+
 
 
 

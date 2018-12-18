@@ -12,6 +12,19 @@ anom_anlyzer = anomaly_analyzer()
 #indication = ['SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.6','SSH-2.0-libssh_0.7.0','SSH-2.0-OpenSSH_7.6p1 Debian-4','hmac-sha2-256,hmac-sha2-512']
 indication = ['SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.6','SSH-2.0-libssh_0.7.0','SSH-2.0-OpenSSH_7.6p1 Debian-4','hmac-sha2-256,hmac-sha2-512']
 
+def clean_csv():
+    with open("ssh_logs.csv","r") as input:
+        with open("ssh_logs.csv","wb") as output: 
+            for line in input:
+                pass
+    with open('ssh_logs.csv', 'a') as csvfile:
+        row = 'IP,timestamp,counter\n' 
+        csvfile.write(row)         
+        csvfile.write('1.1.1.1,7,0\n')
+        csvfile.write('9.9.9.9,7,0')
+
+clean_csv()
+
 q = Queue()
 # We do multi processing so we need a lock
 lock = Lock()
@@ -29,6 +42,7 @@ def ssh_handshake_logic(pkt):
     if counter == 0:
         counter = 1
     else:
+        print 'Detect heand shake'
         q.put(pkt)
         counter = 0
 
@@ -50,3 +64,4 @@ def my_sniffer(pkt):
             pass
  
 sniff(iface="enp0s3", prn=my_sniffer,filter="tcp and port 22",count=0)
+
