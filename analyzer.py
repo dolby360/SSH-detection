@@ -76,7 +76,6 @@ class anomaly_analyzer():
         #print IPs_list
 
         def save_ip_history():
-            
             for i in self.lists_of_IPs_and_timestamps: ## All data from ssh_logs.csv!!!!
                 item = i[len(i) - 1]  # Because lists_of_IPs_and_timestamps is a list of lists we take the last item because it is the must relevant 
                 if item.get_IP() not in IPs_list:
@@ -96,12 +95,32 @@ class anomaly_analyzer():
                                 f = open('IPs_database.csv', "w+")
                                 f.close()
                                 with open('IPs_database.csv', 'a') as csvfile:
-                                    row = 'IP,timestamp,counter\n' 
-                                    csvfile.write(row)         
-
+                                    row = 'IP,timestamp\n' 
+                                    csvfile.write(row)    
 
         save_ip_history()
         
+        def print_data_of_how_many_IPs_tried_to_enter():
+            IPs_csv_holder = []
+            with open('IPs_database.csv') as csvfile:
+                reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+                for row in reader:
+                    if row[IP] != 'IP': #remove header of csv file
+                        IPs_csv_holder.append(csv_data_holder(row[IP],row[Timestamp]))
+            new_IPs_in_last_3_minutes = []
+            for i in range(0,len(IPs_csv_holder)):
+                # Time in minutes since last modification of file
+                last_time = ( Decimal(time.time()) - IPs_csv_holder[i].get_timestamp() ) / 60
+                if last_time < 3 and (IPs_csv_holder[i] not in new_IPs_in_last_3_minutes):
+                    # print last_time
+                    new_IPs_in_last_3_minutes.append(IPs_csv_holder[i])
+
+            if len(new_IPs_in_last_3_minutes) != 0:
+                print 'A list of all IP addresses which tried to connect with SSH in the last 3 minutes'
+                print list(map(lambda x: str(x),new_IPs_in_last_3_minutes))
+
+        print_data_of_how_many_IPs_tried_to_enter()         
+
 
 class csv_data_holder():
     def __init__(self,ip,timestamp):

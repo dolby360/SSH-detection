@@ -22,7 +22,7 @@ class collect_stat():
     def set_new_pkt(self,pkt):
         self.lock.acquire()
         with open('ssh_logs.csv', 'a') as csvfile:
-            row = str(pkt[IP].src) + ',' + str(time.time()) + ',' + str(self.counter) + '\n'
+            row = str(pkt[IP].dst) + ',' + str(time.time()) + ',' + str(self.counter) + '\n'
             csvfile.write(row)
             self.counter += 1
         self.lock.release()
