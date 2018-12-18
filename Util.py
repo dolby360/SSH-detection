@@ -21,4 +21,5 @@ def clean_csv():
         csvfile.write(row)         
         csvfile.write('1.1.1.1,7,0\n')
         csvfile.write('9.9.9.9,7,0\n')
+        csvfile.write('9.9.9.3,7,0\n')
 

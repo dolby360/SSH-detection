@@ -37,7 +37,7 @@ def ssh_handshake_logic(pkt):
     if counter == 0:
         counter = 1
     else:
-        #checkTime(pkt)
+        checkTime(pkt)
         print 'Detect heand shake'
         q.put(pkt)
         counter = 0

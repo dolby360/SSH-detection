@@ -10,6 +10,8 @@ class anomaly_analyzer():
         while True:
             time.sleep(1)
             self.analyze_frequency()
+            self.net_analyzer()
+
     def analyze_frequency(self):
         IP = 0
         Timestamp = 1 
@@ -55,8 +57,51 @@ class anomaly_analyzer():
                 # import subprocess
                 # subprocess.Popen("sudo iptables -A INPUT -s " +listItem[0].get_IP()+ " -p TCP -j DROP")
 
+    def net_analyzer(self):
+        lis = []
+        IPs_list = []
+        IP = 0
+        Timestamp = 1 
+        def read_data_from_csv():
+            with open('IPs_database.csv') as csvfile:
+                reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+                for row in reader:
+                    if row[IP] != 'IP': #remove header of csv file
+                        lis.append(csv_data_holder(row[IP],row[Timestamp]))
+            lis.sort(key=lambda x: str(x))
+       
+        read_data_from_csv()
+
+        IPs_list = list(map(lambda x:str(x),list(set(lis))))
+        #print IPs_list
+
+        def save_ip_history():
+            
+            for i in self.lists_of_IPs_and_timestamps: ## All data from ssh_logs.csv!!!!
+                item = i[len(i) - 1]  # Because lists_of_IPs_and_timestamps is a list of lists we take the last item because it is the must relevant 
+                if item.get_IP() not in IPs_list:
+                    with open('IPs_database.csv', 'a') as csvfile:
+                        row = item.get_IP() + ',' + str(item.get_timestamp()) + '\n'
+                        csvfile.write(row)
+                else: # All of this else is just to update the IP with latest timestamp
+                    for k in range(0,len(lis)):
+                        if item.get_IP() == lis[k].get_IP(): 
+                            # if item.get_IP() == '10.0.0.36':
+                            #     print item.get_IP()
+                            #     print lis[k].get_IP()
+                            #     print item.get_timestamp()
+                            #     print lis[k].get_timestamp()
+                            #     print '-----------------------------------'
+                            if item.get_timestamp() > lis[k].get_timestamp():  #if the new ip have an update timestamp
+                                f = open('IPs_database.csv', "w+")
+                                f.close()
+                                with open('IPs_database.csv', 'a') as csvfile:
+                                    row = 'IP,timestamp,counter\n' 
+                                    csvfile.write(row)         
 
 
+        save_ip_history()
+        
 
 class csv_data_holder():
     def __init__(self,ip,timestamp):
